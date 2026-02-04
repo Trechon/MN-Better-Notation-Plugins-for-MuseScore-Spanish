@@ -215,7 +215,7 @@ MuseScore {
 		
 		checkTransposingInstruments();
 		// ************					CHECK IF SCORE IS TRANSPOSED				************ //
-		if (curScore.style.value("concertPitch") && scoreIncludesTransposingInstrument) addError ("It looks like you have at least one transposing instrument, but the score is currently displayed in concert pitch.\nBecause of this, comments about accidentals may not be accurate for the transposed/written parts.\nUntick ‘Concert Pitch’ in the bottom right, and re-run the plugin.","pagetop");
+		if (curScore.style.value("concertPitch") && scoreIncludesTransposingInstrument) addError ("Parece que tienes al menos un instrumento transpositor, pero la partitura se muestra actualmente en tono de concierto.\nPor ello, los comentarios sobre alteraciones pueden no ser precisos para las partes transpuestas/escritas.\nDesmarca ‘Concert Pitch’ en la esquina inferior derecha y vuelve a ejecutar el plugin.","pagetop");
 
 		for (currentStaffNum = startStaff; currentStaffNum < endStaff; currentStaffNum ++) {
 			
@@ -417,7 +417,7 @@ MuseScore {
 		var perfectIntervalAlts = ["triple diminished","double diminished","diminished","perfect","augmented","double augmented"];
 		var weightings = [-2,0,3,-3,-1,1,4];
 		var accidentals = ["bb",kFlatStr,kNaturalStr,kSharpStr,"x"];
-		var accidentalNames = ["double flat","flat","natural","sharp","double sharp"];
+		var accidentalNames = ["doble bemol","bemol","becuadro","sostenido","doble sostenido"];
 		var isBadAcc = false;
 		var isProblematic, currentAccidental, prevAccidental;
 		var notes = chord.notes;
@@ -451,7 +451,7 @@ MuseScore {
 			var theLine = note.line;
 			
 			if (i > 0 && theLine == prevLine && !flaggedSharedLineSpace) {
-				addError ("Try and avoid having two noteheads\non the same line/space.", [notes[i], notes[i-1]]);
+				addError ("Intenta evitar que haya dos cabezas de nota\nen la misma línea/espacio.", [notes[i], notes[i-1]]);
 				flaggedSharedLineSpace = true;
 				continue;
 			}
@@ -465,7 +465,7 @@ MuseScore {
 				accType = note.accidentalType; // this is an int from the Accidental enum
 				isMicrotone = accType > Accidental.SHARP_SHARP;
 				if (accVisible) lastAccidentalBarNum = currentBarNum;
-				if (accObject.accidentalBracket > 0) addError ('It is unnecessary to use a bracket for a courtesy accidental.\nSee ‘Behind Bars’, p. 83.',accObject);
+				if (accObject.accidentalBracket > 0) addError ('No es necesario usar un corchete para una alteración de cortesía.\nVer ‘Behind Bars’, p. 83.',accObject);
 			}
 			
 			switch (accType) {
@@ -510,7 +510,7 @@ MuseScore {
 			//errorMsg += "accInKeySig = "+accInKeySig+"; accType = "+accType+";";
 			
 			if (note.tieBack) {
-				if (accVisible) addError ("Don’t show accidentals in the middle of a tie",accObject);
+				if (accVisible) addError ("No muestres alteraciones en medio de una ligadura.",accObject);
 			} else {
 				
 				var noteLabel = pitchLabels[diatonicPitchClass]+accidentals[acc+2];
@@ -547,7 +547,7 @@ MuseScore {
 					// ****		c) the accidental does not have a bracket around it
 					var otherAccFlags = accVisible && !wasGraceNote[diatonicPitchClass] && accObject.accidentalBracket == 0;
 					if ((situation1 || situation2 || situation3 ) && otherAccFlags && !isMicrotone) {
-						addError("This was already a "+accidentalNames[acc+2]+".",note);
+						addError("Esto ya era un "+accidentalNames[acc+2]+".",note);
 						//logError (situation1+' '+situation2+' '+situation3+' '+otherAccFlags);
 					}
 				}
@@ -565,7 +565,7 @@ MuseScore {
 							currentAccidental = accidentalNames[acc+2];
 							prevAccidental = accidentalNames[currPCAccs[diatonicPitchClass] + 2];
 							//logError ('acc='+acc+'; currAccs[diatonicPitch]='+currAccs[diatonicPitch]+'; currPCAccs[diatonicPitchClass]='+currPCAccs[diatonicPitchClass]);
-							addError("Consider adding a courtesy "+currentAccidental+" on this note,\nas it was a "+prevAccidental+" in the previous bar.",note);
+							addError("Considera añadir un "+currentAccidental+" de cortesía en esta nota,\nya que era un "+prevAccidental+" en el compás anterior.",note);
 						}
 						
 						// SITUATION 2
@@ -573,7 +573,7 @@ MuseScore {
 						if (!accVisible && currentBarNum != prevBarNumSameOctave && currentBarNum == prevBarNumAnyOctave) {
 							currentAccidental = accidentalNames[acc+2];
 							prevAccidental = accidentalNames[currPCAccs[diatonicPitchClass] + 2];
-							addError("Consider adding a courtesy "+currentAccidental+" on this note,\nas it was a "+prevAccidental+" earlier in the bar.",note);
+							addError("Considera añadir un "+currentAccidental+" de cortesía en esta nota,\nya que era un "+prevAccidental+" antes en el compás.",note);
 						}
 					}
 				}
@@ -648,7 +648,7 @@ MuseScore {
 								//logError(Found Chromatic Ascent");
 								
 								if (previousNoteRestIsNote(prevNote) && previousNoteRestIsNote(note)){
-									if (prevAcc < 0 && !prevAccInKeySig) addError ("Use of a flat during a chromatic ascent leads to avoidable natural sign.\nConsider respelling.\n(Select the note and press J until you get the right note).", prevNote);
+									if (prevAcc < 0 && !prevAccInKeySig) addError ("El uso de un bemol durante un ascenso cromático conduce a un becuadro evitable.\nConsidera reescribirlo enarmónicamente.\n(Selecciona la nota y pulsa J hasta obtener la nota correcta).", prevNote);
 								}
 							}
 							if (prevWrittenPitch - prevPrevWrittenPitch == -1 && writtenPitch - prevWrittenPitch == -1 && !prevPrevNote.parent.is(prevNote.parent) && !prevNote.parent.is(chord)) {
@@ -656,7 +656,7 @@ MuseScore {
 								if (previousNoteRestIsNote(prevNote) && previousNoteRestIsNote(note)) {
 									//logError(Prev notes");
 									
-									if (prevAcc > 0 && !prevAccInKeySig) addError ("Use of a sharp during a chromatic descent leads to avoidable natural sign.\nConsider respelling.\n(Select the note and press J until you get the right note).", prevNote);
+									if (prevAcc > 0 && !prevAccInKeySig) addError ("El uso de un sostenido durante un descenso cromático conduce a un becuadro evitable.\nConsidera reescribirlo enarmónicamente.\n(Selecciona la nota y pulsa J hasta obtener la nota correcta).", prevNote);
 								}
 							}
 						}
@@ -922,8 +922,8 @@ MuseScore {
 								prevPrevNoteHighlighted = false;
 								thisNoteHighlighted = false;
 							} else {
-								var t = "Interval with "+prevNext+" is "+article+" "+alterationLabel+" "+scalarIntervalLabel+".\nConsider respelling as "+newNoteLabel+".\n(Select the note and press J until you get this "+newNoteLabel+")";
-								if (weightingIsClose && scalarIntervalAbs != 0) t = "[SUGGESTION] "+t+"\n\n[Note: The current spelling may in fact be OK, but depends on\nthe wider tonal/scalar context which I can’t analyse.";
+								var t = "El intervalo con "+prevNext+" es "+article+" "+alterationLabel+" "+scalarIntervalLabel+".\nConsidera reescribirlo como "+newNoteLabel+".\n(Selecciona la nota y pulsa J hasta obtener "+newNoteLabel+")";
+								if (weightingIsClose && scalarIntervalAbs != 0) t = "[SUGERENCIA] "+t+"\n\n[Nota: La grafía actual puede estar bien, pero depende\ndel contexto tonal/escala más amplio que no puedo analizar.";
 								addError(t,noteToHighlight);
 								//logError("Added error — now thisNoteHighlighted = "+thisNoteHighlighted+" prevNoteHighlighted = "+prevNoteHighlighted+" prevPrevNoteHighlighted = "+prevPrevNoteHighlighted);
 							}
@@ -1007,7 +1007,7 @@ MuseScore {
 						if (noteToHighlight == null) {
 							logError ('checkChord () — noteToHighlight = null');
 						} else {
-							addError("In non-tonal music, avoid writing "+noteLabel+"s. In tonal music,\nhowever, they may clarify scale steps.\nConsider whether respelling as "+newNoteLabel+" would be better here.",noteToHighlight);
+							addError("En música no tonal, evita escribir "+noteLabel+"s. En música tonal,\nsin embargo, pueden aclarar los grados de la escala.\nConsidera si sería mejor reescribirlo como "+newNoteLabel+".",noteToHighlight);
 						}
 					}
 				} // end if (!doShowError && accVisible && isProblematic && !isMicrotonal)

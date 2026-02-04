@@ -346,7 +346,7 @@ MuseScore {
 				for (var i = 0; i < numGrandStaves;i++) {
 					var bottomGrandStaffNum = grandStaffTops[i]+1;
 					/*if (bottomGrandStaffNum < numStaves-1) {
-						if (!isGrandStaff[bottomGrandStaffNum+1] && staffVisible[bottomGrandStaffNum]) addError("For small ensembles, grand staff instruments should be at the bottom of the score.\nMove ‘"+curScore.staves[bottomGrandStaffNum].part.longName+"’ down using the Instruments tab.","pagetop");
+						if (!isGrandStaff[bottomGrandStaffNum+1] && staffVisible[bottomGrandStaffNum]) addError("Para conjuntos pequeños, los instrumentos con gran pentagrama deben ir al final de la partitura.\nMueve ‘"+curScore.staves[bottomGrandStaffNum].part.longName+"’ hacia abajo usando la pestaña Instrumentos.","pagetop");
 					}*/
 				}
 			}
